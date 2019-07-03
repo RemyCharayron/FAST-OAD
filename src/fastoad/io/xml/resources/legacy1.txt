@@ -200,3 +200,12 @@ geometry:wing_front_spar_ratio_tip, Aircraft/geometry/wing/front/tip
 geometry:wing_rear_spar_ratio_root, Aircraft/geometry/wing/rear/root
 geometry:wing_rear_spar_ratio_kink, Aircraft/geometry/wing/rear/middle
 geometry:wing_rear_spar_ratio_tip, Aircraft/geometry/wing/rear/tip
+sizing_mission:flap_angle_to, Aircraft/mission/sizing/takeoff/flap_angle
+sizing_mission:slat_angle_to, Aircraft/mission/sizing/takeoff/slat_angle
+sizing_mission:flap_angle_landing, Aircraft/mission/sizing/landing/flap_angle
+sizing_mission:slat_angle_landing, Aircraft/mission/sizing/landing/slat_angle
+geometry:wing_sweep_100_outer, Aircraft/geometry/wing/sweep_100_2
+geometry:flap_chord_ratio, Aircraft/geometry/high_lift/flap/chord
+geometry:flap_span_ratio, Aircraft/geometry/high_lift/flap/span
+geometry:slat_chord_ratio, Aircraft/geometry/high_lift/slat/chord
+geometry:slat_span_ratio, Aircraft/geometry/high_lift/slat/span
