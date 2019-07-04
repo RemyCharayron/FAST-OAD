@@ -209,3 +209,4 @@ geometry:flap_chord_ratio, Aircraft/geometry/high_lift/flap/chord
 geometry:flap_span_ratio, Aircraft/geometry/high_lift/flap/span
 geometry:slat_chord_ratio, Aircraft/geometry/high_lift/slat/chord
 geometry:slat_span_ratio, Aircraft/geometry/high_lift/slat/span
+tlar:cruise_Mach, Aircraft/TLAR/cruise_Mach

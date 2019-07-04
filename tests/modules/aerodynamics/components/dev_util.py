@@ -17,6 +17,7 @@ from openmdao.core.problem import Problem
 from fastoad.io.xml import OpenMdaoXmlIO
 from fastoad.io.xml.openmdao_legacy_io import OpenMdaoLegacy1XmlIO
 from fastoad.modules.aerodynamics.components.high_lift_aero import ComputeDeltaHighLift
+from fastoad.modules.aerodynamics.components.oswald import OswaldCoefficient
 from fastoad.openmdao.checks import get_unconnected_inputs
 from tests import root_folder
 
@@ -30,7 +31,7 @@ def create_inputs():
     Completes 'aerodynamics_inputs.xml' with needed data for required componenets.
     Data are retrieved from 'CeRAS01_baseline.xml'
     """
-    components = [ComputeDeltaHighLift(), ComputeDeltaHighLift()]
+    components = [ComputeDeltaHighLift(), ComputeDeltaHighLift(), OswaldCoefficient()]
     components[1].options['landing_flag'] = True
 
     ceras_reader = OpenMdaoLegacy1XmlIO(CERAS_FILE_PATH)
