@@ -55,7 +55,7 @@ class Atmosphere:
     """
 
     # pylint: disable=too-many-instance-attributes  # Needed for avoiding redoing computations
-    def __init__(self, altitude_ft: Union[float, Sequence[float]], delta_t: float = 0.):
+    def __init__(self, altitude_ft: Union[float, Sequence], delta_t: float = 0.):
         """
         Builds an atmosphere instance that will provide atmosphere values
 
@@ -134,6 +134,13 @@ class Atmosphere:
                                              (self.temperature + 110.4))
                                           ) / self.density
         return self.__return_value(self.__kinematic_viscosity)
+
+    def get_unitary_reynolds(self, mach):
+        """
+        :param mach: Mach number
+        :return: Unitary Reynolds number in 1/m
+        """
+        return mach * self.speed_of_sound / self.kinematic_viscosity
 
     def __return_value(self, value):
         """
