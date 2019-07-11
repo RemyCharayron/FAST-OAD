@@ -52,88 +52,84 @@ class Atmosphere:
         >>> temperatures = atm.pressure # pressures for all defined altitudes
         >>> viscosities = atm.kinematic_viscosity # viscosities for all defined altitudes
 
+    :param altitude_ft: altitude in foots
+    :param delta_t: temperature increment applied to whole temperature profile
     """
 
     # pylint: disable=too-many-instance-attributes  # Needed for avoiding redoing computations
     def __init__(self, altitude_ft: Union[float, Sequence], delta_t: float = 0.):
-        """
-        Builds an atmosphere instance that will provide atmosphere values
 
-        :param altitude_ft: altitude in foots
-        :param delta_t: temperature increment applied to whole temperature profile
-        """
-
-        self.__delta_t = delta_t
+        self._delta_t = delta_t
 
         # Floats will be provided as output if altitude is a scalar
-        self.__float_expected = isinstance(altitude_ft, Number)
+        self._float_expected = isinstance(altitude_ft, Number)
 
         # For convenience, let's have altitude as numpy arrays in all cases
         if not isinstance(altitude_ft, np.ndarray):
-            self.__altitude = np.array(altitude_ft) * foot
+            self._altitude = np.array(altitude_ft) * foot
         else:
-            self.__altitude = altitude_ft * foot
+            self._altitude = altitude_ft * foot
 
-        self.__out_shape = self.__altitude.shape
+        self._out_shape = self._altitude.shape
 
         # Sets indices for tropopause
-        self.__idx_tropo = self.__altitude < TROPOPAUSE
-        self.__idx_strato = self.__altitude >= TROPOPAUSE
+        self._idx_tropo = self._altitude < TROPOPAUSE
+        self._idx_strato = self._altitude >= TROPOPAUSE
 
         # Outputs
-        self.__temperature = None
-        self.__pressure = None
-        self.__density = None
-        self.__speed_of_sound = None
-        self.__kinematic_viscosity = None
+        self._temperature = None
+        self._pressure = None
+        self._density = None
+        self._speed_of_sound = None
+        self._kinematic_viscosity = None
 
     @property
     def temperature(self):
         """ Temperature in K """
-        if self.__temperature is None:
-            self.__temperature = np.zeros(self.__out_shape)
-            self.__temperature[self.__idx_tropo] = SEA_LEVEL_TEMPERATURE - 0.0065 \
-                                                   * self.__altitude[self.__idx_tropo] \
-                                                   + self.__delta_t
-            self.__temperature[self.__idx_strato] = 216.65 + self.__delta_t
-        return self.__return_value(self.__temperature)
+        if self._temperature is None:
+            self._temperature = np.zeros(self._out_shape)
+            self._temperature[self._idx_tropo] = SEA_LEVEL_TEMPERATURE - 0.0065 \
+                                                 * self._altitude[self._idx_tropo] \
+                                                 + self._delta_t
+            self._temperature[self._idx_strato] = 216.65 + self._delta_t
+        return self._return_value(self._temperature)
 
     @property
     def pressure(self):
         """ Pressure in Pa """
-        if self.__pressure is None:
-            self.__pressure = np.zeros(self.__out_shape)
-            self.__pressure[self.__idx_tropo] = \
+        if self._pressure is None:
+            self._pressure = np.zeros(self._out_shape)
+            self._pressure[self._idx_tropo] = \
                 SEA_LEVEL_PRESSURE * (1 -
-                                      (self.__altitude[self.__idx_tropo] / 44330.78)) ** 5.25587611
-            self.__pressure[self.__idx_strato] = \
-                22632 * 2.718281 ** (1.7345725 - 0.0001576883 * self.__altitude[self.__idx_strato])
-        return self.__return_value(self.__pressure)
+                                      (self._altitude[self._idx_tropo] / 44330.78)) ** 5.25587611
+            self._pressure[self._idx_strato] = \
+                22632 * 2.718281 ** (1.7345725 - 0.0001576883 * self._altitude[self._idx_strato])
+        return self._return_value(self._pressure)
 
     @property
     def density(self):
         """ Density in kg/m3 """
-        if self.__density is None:
-            self.__density = self.pressure / AIR_GAS_CONSTANT / self.temperature
-        return self.__return_value(self.__density)
+        if self._density is None:
+            self._density = self.pressure / AIR_GAS_CONSTANT / self.temperature
+        return self._return_value(self._density)
 
     @property
     def speed_of_sound(self):
         """ Speed of sound in m/s """
-        if self.__speed_of_sound is None:
-            self.__speed_of_sound = (1.4 * AIR_GAS_CONSTANT * self.temperature) ** 0.5
-        return self.__return_value(self.__speed_of_sound)
+        if self._speed_of_sound is None:
+            self._speed_of_sound = (1.4 * AIR_GAS_CONSTANT * self.temperature) ** 0.5
+        return self._return_value(self._speed_of_sound)
 
     @property
     def kinematic_viscosity(self):
         """ Kinematic viscosity in m2/s """
-        if self.__kinematic_viscosity is None:
-            self.__kinematic_viscosity = ((0.000017894 *
-                                           (self.temperature / SEA_LEVEL_TEMPERATURE) ** (3 / 2))
-                                          * ((SEA_LEVEL_TEMPERATURE + 110.4) /
+        if self._kinematic_viscosity is None:
+            self._kinematic_viscosity = ((0.000017894 *
+                                          (self.temperature / SEA_LEVEL_TEMPERATURE) ** (3 / 2))
+                                         * ((SEA_LEVEL_TEMPERATURE + 110.4) /
                                              (self.temperature + 110.4))
-                                          ) / self.density
-        return self.__return_value(self.__kinematic_viscosity)
+                                         ) / self.density
+        return self._return_value(self._kinematic_viscosity)
 
     def get_unitary_reynolds(self, mach):
         """
@@ -142,11 +138,11 @@ class Atmosphere:
         """
         return mach * self.speed_of_sound / self.kinematic_viscosity
 
-    def __return_value(self, value):
+    def _return_value(self, value):
         """
         :returns: a float when needed. Otherwise, returns the value itself.
         """
-        if self.__float_expected:
+        if self._float_expected:
             return float(value)
 
         return value
