@@ -18,11 +18,20 @@ Module for basic geometrical data
 
 
 class ComponentGeometry:
-    """ A class for storing geometry data of an aircraft component"""
+    """ A class for storing geometry data of an aircraft component """
 
     def __init__(self):
-        self.reference_length = 0.
+        self.reference_length = None
         """ Reference length of the element """
 
-        self.reference_area = 0.
+        self.reference_area = None
         """ Reference area of the element """
+
+        self.wetted_area = None
+        """ Area of wetted surface of the element """
+
+        self.mean_relative_thickness = None
+        """ Mean value of thickness/chord ratio of the element """
+
+        self.sweep_25 = None
+        """ Sweep value at 25% chord of the element """
