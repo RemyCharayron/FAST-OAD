@@ -18,7 +18,7 @@ from numbers import Number
 from typing import Union, Sequence
 
 import numpy as np
-from scipy.constants import foot, atmosphere, R
+from scipy.constants import atmosphere, R
 
 AIR_MOLAR_MASS = 28.9647e-3
 AIR_GAS_CONSTANT = R / AIR_MOLAR_MASS
@@ -52,23 +52,23 @@ class Atmosphere:
         >>> temperatures = atm.pressure # pressures for all defined altitudes
         >>> viscosities = atm.kinematic_viscosity # viscosities for all defined altitudes
 
-    :param altitude_ft: altitude in foots
+    :param altitude: altitude in foots
     :param delta_t: temperature increment applied to whole temperature profile
     """
 
     # pylint: disable=too-many-instance-attributes  # Needed for avoiding redoing computations
-    def __init__(self, altitude_ft: Union[float, Sequence], delta_t: float = 0.):
+    def __init__(self, altitude: Union[float, Sequence], delta_t: float = 0.):
 
         self._delta_t = delta_t
 
         # Floats will be provided as output if altitude is a scalar
-        self._float_expected = isinstance(altitude_ft, Number)
+        self._float_expected = isinstance(altitude, Number)
 
         # For convenience, let's have altitude as numpy arrays in all cases
-        if not isinstance(altitude_ft, np.ndarray):
-            self._altitude = np.array(altitude_ft) * foot
+        if not isinstance(altitude, np.ndarray):
+            self._altitude = np.array(altitude)
         else:
-            self._altitude = altitude_ft * foot
+            self._altitude = altitude
 
         self._out_shape = self._altitude.shape
 

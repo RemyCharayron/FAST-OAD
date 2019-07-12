@@ -17,7 +17,6 @@ from numbers import Number
 
 import numpy as np
 import pytest
-from scipy.constants import foot
 
 from fastoad.utils.physics.atmosphere import Atmosphere
 
@@ -74,7 +73,7 @@ def test_atmosphere():
 
     for values in expectations:
         # Checking with altitude provided as scalar
-        alt = values['alt'] / foot
+        alt = values['alt']
         assert isinstance(alt, Number)
         atm = Atmosphere(alt, values['dT'])
         assert values['T'] == pytest.approx(atm.temperature, rel=1e-4)
@@ -85,7 +84,7 @@ def test_atmosphere():
         assert values['SoS'] == pytest.approx(atm.speed_of_sound, rel=1e-3)
 
         # Checking with altitude provided as one-element list
-        alt = [values['alt'] / foot]
+        alt = [values['alt']]
         assert isinstance(alt, list)
         atm = Atmosphere(alt, values['dT'])
         assert values['T'] == pytest.approx(atm.temperature, rel=1e-4)
@@ -99,7 +98,7 @@ def test_atmosphere():
         idx = expectations['dT'] == delta_t
 
         # Checking with altitude provided as 1D numpy array
-        alt = expectations['alt'][idx] / foot
+        alt = expectations['alt'][idx]
         assert isinstance(alt, np.ndarray)
         assert len(alt.shape) == 1
         atm = Atmosphere(alt, delta_t)
@@ -113,7 +112,7 @@ def test_atmosphere():
                                                          rel=1e-3)
 
         # Checking with altitude provided as a list
-        alt = (expectations['alt'][idx] / foot).tolist()
+        alt = (expectations['alt'][idx]).tolist()
         assert isinstance(alt, list)
         atm = Atmosphere(alt, delta_t)
         assert expectations['T'][idx] == pytest.approx(atm.temperature,
@@ -128,7 +127,10 @@ def test_atmosphere():
 
 def test_reynolds():
     """ Tests computation of Reynolds number """
-    atm = Atmosphere([[0, 35000], [0, 35000]])
+
+    from scipy.constants import foot
+
+    atm = Atmosphere([[0, 35000 * foot], [0, 35000 * foot]])
     mach = [[0.2, 0.2], [0.8, 0.8]]
 
     # source:  http://www.aerospaceweb.org/design/scripts/atmosphere/
