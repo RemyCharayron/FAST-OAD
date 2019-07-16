@@ -224,3 +224,8 @@ geometry:pylon_length, Aircraft/geometry/propulsion/pylon_length
 geometry:nacelle_length, Aircraft/geometry/propulsion/nac_length
 geometry:nacelle_wet_area, Aircraft/geometry/propulsion/wet_area_nac
 geometry:fan_length, Aircraft/geometry/propulsion/fan_length
+kfactors_aero:K_Cd, Aircraft/aerodynamics/k_factors/Cx/k
+kfactors_aero:Offset_Cd, Aircraft/aerodynamics/k_factors/Cx/offset
+kfactors_aero:K_winglet_Cd, Aircraft/aerodynamics/k_factors/winglet_Cx/k
+kfactors_aero:Offset_winglet_Cd, Aircraft/aerodynamics/k_factors/winglet_Cx/offset
+sizing_mission:cruise_altitude, Aircraft/mission/sizing/cruise/cruise_altitude
