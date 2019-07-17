@@ -35,7 +35,7 @@ class ComputeReynolds(ExplicitComponent):
             self.add_output('reynolds_low_speed')
         else:
             self.add_input('tlar:cruise_Mach', val=np.nan)
-            self.add_input('sizing_mission:cruise_altitude', val=np.nan)
+            self.add_input('sizing_mission:cruise_altitude', val=np.nan, units='m')
             self.add_output('reynolds_high_speed')
 
     def compute(self, inputs, outputs):
