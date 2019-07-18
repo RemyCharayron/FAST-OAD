@@ -229,3 +229,4 @@ kfactors_aero:Offset_Cd, Aircraft/aerodynamics/k_factors/Cx/offset
 kfactors_aero:K_winglet_Cd, Aircraft/aerodynamics/k_factors/winglet_Cx/k
 kfactors_aero:Offset_winglet_Cd, Aircraft/aerodynamics/k_factors/winglet_Cx/offset
 sizing_mission:cruise_altitude, Aircraft/mission/sizing/cruise/cruise_altitude
+geometry:wing_aspect_ratio, Aircraft/geometry/wing/aspect_ratio
