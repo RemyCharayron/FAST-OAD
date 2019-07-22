@@ -236,3 +236,4 @@ kfactors_aero:K_winglet_Cl, Aircraft/aerodynamics/k_factors/winglet_Cl/k
 kfactors_aero:Offset_winglet_Cl, Aircraft/aerodynamics/k_factors/winglet_Cl/offset
 kfactors_aero:K_HL_LDG,  Aircraft/aerodynamics/k_factors/HL_LDG/k
 kfactors_aero:Offset_HL_LDG,  Aircraft/aerodynamics/k_factors/HL_LDG/offset
+tlar:v_approach, Aircraft/TLAR/v_approach
