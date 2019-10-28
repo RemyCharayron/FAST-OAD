@@ -1,9 +1,5 @@
-"""
-Package for geometries of lifting surfaces
-"""
-
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2020  ONERA/ISAE
+#  Copyright (C) 2019  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -15,4 +11,9 @@ Package for geometries of lifting surfaces
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from .profile import Profile
+from fastoad.modules.geometry import ComponentGeometry
+
+
+class LiftingSurface(ComponentGeometry):
+    def __init__(self):
+        self.sections = []
