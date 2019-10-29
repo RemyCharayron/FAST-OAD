@@ -21,6 +21,8 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 
+from fastoad.modules.geometry.base import Coordinates2D
+
 X = 'x'
 Z = 'z'
 THICKNESS = 'thickness'
@@ -35,11 +37,17 @@ def _rotate_2d_array(array: Union[np.ndarray, pd.DataFrame], theta: float) \
 
 
 class Profile:
-    """ Class for managing 2D wing profiles """
+    """ Class for managing 2D wing profiles
+        :param chord_length:
+        :param x:
+        :param y:
+    """
 
     # pylint: disable=invalid-name  # X and Z are valid names in this context
 
-    def __init__(self):
+    def __init__(self, chord_length: float = 0.,
+                 x: float = 0.,
+                 y: float = 0.):
 
         self._rel_mean_line_and_thickness = pd.DataFrame(columns=[X, Z, THICKNESS])
         """
@@ -49,14 +57,16 @@ class Profile:
         'thickness' is relative to max thickness
         """
 
-        self.chord_length = None
+        self.chord_length: float = chord_length
         """ in meters """
 
-        self.max_relative_thickness = None
+        self.max_relative_thickness: float = 0.
         """ max thickness / chord length"""
 
-        self.twist_angle = 0.
+        self.twist_angle: float = 0.
         """ In degrees. Defines how profile is rotated around the 25% chord """
+
+        self.planform_position: Coordinates2D = (x, y)
 
     def set_points(self, x: Sequence, z: Sequence,
                    keep_chord_length: bool = True,
@@ -86,9 +96,9 @@ class Profile:
         # Upper and lower sides are defined, we can compute mean line and thickness
         chord_length, max_thickness = self._compute_mean_line_and_thickness(upper, lower)
 
-        if not keep_chord_length or not self.chord_length:
+        if not keep_chord_length or self.chord_length == 0.:
             self.chord_length = chord_length
-        if not keep_relative_thickness or not self.max_relative_thickness:
+        if not keep_relative_thickness or self.max_relative_thickness == 0.:
             self.max_relative_thickness = max_thickness / chord_length
 
         # Put Z of mean line at 25% chord to zero

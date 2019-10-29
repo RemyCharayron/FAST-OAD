@@ -1,8 +1,5 @@
-"""
-Module for basic geometrical data
-"""
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2020  ONERA/ISAE
+#  Copyright (C) 2019  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -14,22 +11,8 @@ Module for basic geometrical data
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from abc import ABC
-from collections import namedtuple
-from typing import TypeVar
-
-ComponentGeometrySubClass = TypeVar('ComponentGeometrySubClass', bound='ComponentGeometry')
-
-Coordinates2D = namedtuple('Coordinates2D', ['x', 'y'])
-Coordinates3D = namedtuple('Coordinates3D', ['x', 'y', 'z'])
+from fastoad.modules.geometry.lifting_surfaces.lifting_surface import LiftingSurface
 
 
-class ComponentGeometry(ABC):
-    """ A class for storing geometry data of an aircraft component """
-
-    def __init__(self):
-        self.reference_length = None
-        """ Reference length of the element """
-
-        self.reference_area = None
-        """ Reference area of the element """
+def test_compute_area():
+    surf = LiftingSurface()
