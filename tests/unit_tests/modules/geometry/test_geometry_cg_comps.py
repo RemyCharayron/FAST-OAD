@@ -2,7 +2,7 @@
 Test module for geometry functions of cg components
 """
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2019  ONERA/ISAE
+#  Copyright (C) 2020  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -22,32 +22,19 @@ from openmdao.core.problem import Problem
 
 from fastoad.io.xml import XPathReader
 from fastoad.io.xml.openmdao_legacy_io import OMLegacy1XmlIO
-from fastoad.modules.geometry.cg_components \
-    import ComputeAeroCenter
-from fastoad.modules.geometry.cg_components \
-    import ComputeCGLoadCase1
-from fastoad.modules.geometry.cg_components \
-    import ComputeCGLoadCase2
-from fastoad.modules.geometry.cg_components \
-    import ComputeCGLoadCase3
-from fastoad.modules.geometry.cg_components \
-    import ComputeCGLoadCase4
-from fastoad.modules.geometry.cg_components \
-    import ComputeCGRatioAft
-from fastoad.modules.geometry.cg_components \
-    import ComputeControlSurfacesCG
-from fastoad.modules.geometry.cg_components \
-    import ComputeGlobalCG
-from fastoad.modules.geometry.cg_components \
-    import ComputeMaxCGratio
-from fastoad.modules.geometry.cg_components \
-    import ComputeOthersCG
-from fastoad.modules.geometry.cg_components \
-    import ComputeStaticMargin
-from fastoad.modules.geometry.cg_components \
-    import ComputeTanksCG
-from fastoad.modules.geometry.cg_components \
-    import ComputeWingCG
+from fastoad.modules._deprecated.geometry.cg_components import ComputeAeroCenter
+from fastoad.modules._deprecated.geometry.cg_components import ComputeCGLoadCase1
+from fastoad.modules._deprecated.geometry.cg_components import ComputeCGLoadCase2
+from fastoad.modules._deprecated.geometry.cg_components import ComputeCGLoadCase3
+from fastoad.modules._deprecated.geometry.cg_components import ComputeCGLoadCase4
+from fastoad.modules._deprecated.geometry.cg_components import ComputeCGRatioAft
+from fastoad.modules._deprecated.geometry.cg_components import ComputeControlSurfacesCG
+from fastoad.modules._deprecated.geometry.cg_components import ComputeGlobalCG
+from fastoad.modules._deprecated.geometry.cg_components import ComputeMaxCGratio
+from fastoad.modules._deprecated.geometry.cg_components import ComputeOthersCG
+from fastoad.modules._deprecated.geometry.cg_components import ComputeStaticMargin
+from fastoad.modules._deprecated.geometry.cg_components import ComputeTanksCG
+from fastoad.modules._deprecated.geometry.cg_components import ComputeWingCG
 
 
 @pytest.fixture(scope="module")
@@ -58,6 +45,7 @@ def xpath_reader() -> XPathReader:
     return XPathReader(
         pth.join(pth.dirname(__file__), "data", "geometry_inputs_full.xml"))
 
+
 @pytest.fixture(scope="module")
 def input_xml() -> OMLegacy1XmlIO:
     """
@@ -66,6 +54,7 @@ def input_xml() -> OMLegacy1XmlIO:
     # TODO: have more consistency in input data (no need for the whole geometry_inputs_full.xml)
     return OMLegacy1XmlIO(
         pth.join(pth.dirname(__file__), "data", "geometry_inputs_full.xml"))
+
 
 def test_compute_aero_center(input_xml):
     """ Tests computation of aerodynamic center """
@@ -244,6 +233,7 @@ def test_compute_cg_loadcase4(input_xml):
     cg_ratio_lc4 = problem['cg_ratio_lc4']
     assert cg_ratio_lc4 == pytest.approx(0.388971, abs=1e-6)
 
+
 def test_compute_cg_others(input_xml):
     """ Tests computation of other components center of gravity """
 
@@ -330,6 +320,7 @@ def test_compute_cg_others(input_xml):
     assert x_cg_rear_fret == pytest.approx(20.87, abs=1e-2)
     x_cg_front_fret = problem['weight:payload:front_fret:CG:x']
     assert x_cg_front_fret == pytest.approx(9.94, abs=1e-2)
+
 
 def test_compute_cg_ratio_aft(input_xml):
     """ Tests computation of center of gravity with aft estimation """

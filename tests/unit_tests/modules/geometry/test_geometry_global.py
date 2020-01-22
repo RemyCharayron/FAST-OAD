@@ -2,7 +2,7 @@
 Test module for geometry global groups
 """
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2019  ONERA/ISAE
+#  Copyright (C) 2020  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +22,8 @@ import pytest
 
 from fastoad.io.xml import XPathReader
 from fastoad.io.xml.openmdao_legacy_io import OMLegacy1XmlIO
-from fastoad.modules.geometry import GetCG, Geometry
+from fastoad.modules._deprecated.geometry.geometry import Geometry
+from fastoad.modules._deprecated.geometry.get_cg import GetCG
 from fastoad.modules.mass_breakdown import MassBreakdown
 from tests.testing_utilities import run_system
 

@@ -1,6 +1,7 @@
 """
-Test module for geometry general functions
+    Estimation of maximum center of gravity ratio
 """
+
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
 #  Copyright (C) 2020  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
@@ -13,25 +14,24 @@ Test module for geometry general functions
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import numpy as np
+from openmdao.core.explicitcomponent import ExplicitComponent
 
-# pylint: disable=redefined-outer-name  # needed for pytest fixtures
-import filecmp
-import os
+class ComputeMaxCGratio(ExplicitComponent):
+    # TODO: Document equations. Cite sources
+    """ Maximum center of gravity ratio estimation """
 
-from fastoad.modules._deprecated.geometry.functions import airfoil_reshape
+    def setup(self):
 
+        self.add_input('cg_ratio_aft', val=np.nan)
 
-def test_reshape_airfoil():
-    """ Tests the reshape of the airfoil """
+        for i in range(4):
+            self.add_input('cg_ratio_lc'+str(i+1), val=np.nan)
 
-    f_path_data = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
-    f_path_ori = os.path.join(f_path_data, 'BACJ.txt')
-    f_path_root_ref = os.path.join(f_path_data, 'root_ref.txt')
-    f_path_root = os.path.join(f_path_data, 'root.txt')
-    el_emp = 0.159
+        self.add_output('cg_ratio')
 
-    airfoil_reshape(el_emp, f_path_ori, f_path_root)
+        self.declare_partials('*', '*', method='fd')
 
-    are_same = filecmp.cmp(f_path_root_ref, f_path_root)
-
-    assert are_same
+    def compute(self, inputs, outputs):
+        outputs['cg_ratio'] = max(inputs['cg_ratio_aft'], inputs['cg_ratio_lc1'],
+               inputs['cg_ratio_lc2'], inputs['cg_ratio_lc3'], inputs['cg_ratio_lc4'])

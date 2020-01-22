@@ -2,7 +2,7 @@
 Test module for geometry functions of cg components
 """
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2019  ONERA/ISAE
+#  Copyright (C) 2020  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -22,24 +22,24 @@ from openmdao.core.problem import Problem
 
 from fastoad.io.xml import XPathReader
 from fastoad.io.xml.openmdao_legacy_io import OMLegacy1XmlIO
-from fastoad.modules.geometry.geom_components import ComputeTotalArea, UpdateMLG
-from fastoad.modules.geometry.geom_components.fuselage \
+from fastoad.modules._deprecated.geometry.geom_components import ComputeTotalArea, UpdateMLG
+from fastoad.modules._deprecated.geometry.geom_components.fuselage \
     import ComputeFuselageGeometryBasic, ComputeFuselageGeometryCabinSizing
-from fastoad.modules.geometry.geom_components.ht \
+from fastoad.modules._deprecated.geometry.geom_components.ht \
     import ComputeHorizontalTailGeometry
-from fastoad.modules.geometry.geom_components.ht.components \
+from fastoad.modules._deprecated.geometry.geom_components.ht.components \
     import ComputeHTArea, ComputeHTcg, ComputeHTMAC, ComputeHTChord, \
     ComputeHTClalpha, ComputeHTSweep, ComputeHTVolCoeff
-from fastoad.modules.geometry.geom_components.nacelle_pylons.compute_nacelle_pylons import \
+from fastoad.modules._deprecated.geometry.geom_components.nacelle_pylons import \
     ComputeNacelleAndPylonsGeometry
-from fastoad.modules.geometry.geom_components.vt \
+from fastoad.modules._deprecated.geometry.geom_components.vt \
     import ComputeVerticalTailGeometry
-from fastoad.modules.geometry.geom_components.vt.components \
+from fastoad.modules._deprecated.geometry.geom_components.vt.components \
     import ComputeVTArea, ComputeVTcg, ComputeVTMAC, ComputeVTChords, \
     ComputeVTClalpha, ComputeCnBeta, ComputeVTSweep, \
     ComputeVTVolCoeff, ComputeVTDistance
-from fastoad.modules.geometry.geom_components.wing import ComputeWingGeometry
-from fastoad.modules.geometry.geom_components.wing.components \
+from fastoad.modules._deprecated.geometry.geom_components.wing import ComputeWingGeometry
+from fastoad.modules._deprecated.geometry.geom_components.wing.components \
     import ComputeB50, ComputeCLalpha, ComputeL1AndL4Wing, \
     ComputeL2AndL3Wing, ComputeMACWing, ComputeMFW, ComputeSweepWing, \
     ComputeToCWing, ComputeWetAreaWing, ComputeXWing, ComputeYWing
@@ -54,6 +54,7 @@ def xpath_reader() -> XPathReader:
     return XPathReader(
         pth.join(pth.dirname(__file__), "data", "geometry_inputs_full.xml"))
 
+
 @pytest.fixture(scope="module")
 def input_xml() -> OMLegacy1XmlIO:
     """
@@ -62,6 +63,7 @@ def input_xml() -> OMLegacy1XmlIO:
     # TODO: have more consistency in input data (no need for the whole geometry_inputs_full.xml)
     return OMLegacy1XmlIO(
         pth.join(pth.dirname(__file__), "data", "geometry_inputs_full.xml"))
+
 
 def test_compute_fuselage_cabin_sizing(input_xml):
     """ Tests computation of the fuselage with cabin sizing """
@@ -114,6 +116,7 @@ def test_compute_fuselage_cabin_sizing(input_xml):
     assert fuselage_wet_area == pytest.approx(401.956, abs=1e-3)
     pnc = problem['geometry:cabin:crew_count:commercial']
     assert pnc == pytest.approx(4, abs=1)
+
 
 def test_compute_fuselage_basic(input_xml):
     """ Tests computation of the fuselage with no cabin sizing """
@@ -427,6 +430,7 @@ def test_compute_vt_cn(input_xml):
     dcn_beta = problem['dcn_beta']
     assert dcn_beta == pytest.approx(0.258348, abs=1e-6)
 
+
 def test_compute_vt_area(input_xml):
     """ Tests computation of the vertical tail area """
 
@@ -558,7 +562,6 @@ def test_compute_vt_distance(input_xml):
 
     input_vars = input_xml.read(only=input_list)
 
-
     component = ComputeVTDistance()
 
     problem = run_system(component, input_vars)
@@ -567,6 +570,7 @@ def test_compute_vt_distance(input_xml):
     assert lp_vt == pytest.approx(16.55, abs=1e-2)
     k_ar_effective = problem['k_ar_effective']
     assert k_ar_effective == pytest.approx(1.55, abs=1e-2)
+
 
 def test_compute_vt_cl(input_xml):
     """ Tests computation of the vertical tail lift coefficient """
@@ -670,6 +674,7 @@ def test_geometry_global_vt(input_xml):
     vol_coeff = problem['geometry:vertical_tail:volume_coefficient']
     assert vol_coeff == pytest.approx(0.105, abs=1e-3)
 
+
 def test_geometry_wing_b50(input_xml):
     """ Tests computation of the wing B50 """
 
@@ -690,6 +695,7 @@ def test_geometry_wing_b50(input_xml):
 
     wing_b_50 = problem['geometry:wing:b_50']
     assert wing_b_50 == pytest.approx(34.166, abs=1e-3)
+
 
 def test_geometry_wing_cl_alpha(input_xml):
     """ Tests computation of the wing lift coefficient """
@@ -716,6 +722,7 @@ def test_geometry_wing_cl_alpha(input_xml):
     cl_alpha = problem['aerodynamics:aircraft:cruise:CL_alpha']
     assert cl_alpha == pytest.approx(6.49, abs=1e-2)
 
+
 def test_geometry_wing_l1_l4(input_xml):
     """ Tests computation of the wing chords (l1 and l4) """
 
@@ -739,6 +746,7 @@ def test_geometry_wing_l1_l4(input_xml):
     assert wing_l1 == pytest.approx(4.953, abs=1e-3)
     wing_l4 = problem['geometry:wing:tip:chord']
     assert wing_l4 == pytest.approx(1.882, abs=1e-3)
+
 
 def test_geometry_wing_l2_l3(input_xml):
     """ Tests computation of the wing chords (l2 and l3) """
@@ -765,6 +773,7 @@ def test_geometry_wing_l2_l3(input_xml):
     assert wing_l2 == pytest.approx(6.26, abs=1e-2)
     wing_l3 = problem['geometry:wing:kink:chord']
     assert wing_l3 == pytest.approx(3.985, abs=1e-3)
+
 
 def test_geometry_wing_mac(input_xml):
     """ Tests computation of the wing mean aerodynamic chord """
@@ -794,6 +803,7 @@ def test_geometry_wing_mac(input_xml):
     wing_y0 = problem['geometry:wing:MAC:y']
     assert wing_y0 == pytest.approx(6.293, abs=1e-3)
 
+
 def test_geometry_wing_mfw(input_xml):
     """ Tests computation of the wing max fuel weight """
 
@@ -812,6 +822,7 @@ def test_geometry_wing_mfw(input_xml):
 
     mfw = problem['weight:aircraft:MFW']
     assert mfw == pytest.approx(19284.7, abs=1e-1)
+
 
 def test_geometry_wing_sweep(input_xml):
     """ Tests computation of the wing sweeps """
@@ -840,6 +851,7 @@ def test_geometry_wing_sweep(input_xml):
     sweep_100_outer = problem['geometry:wing:sweep_100_outer']
     assert sweep_100_outer == pytest.approx(16.7, abs=1e-1)
 
+
 def test_geometry_wing_toc(input_xml):
     """ Tests computation of the wing ToC (Thickness of Chord) """
 
@@ -863,6 +875,7 @@ def test_geometry_wing_toc(input_xml):
     toc_tip = problem['geometry:wing:tip:thickness_ratio']
     assert toc_tip == pytest.approx(0.11, abs=1e-2)
 
+
 def test_geometry_wing_wet_area(input_xml):
     """ Tests computation of the wing wet area """
 
@@ -883,6 +896,7 @@ def test_geometry_wing_wet_area(input_xml):
     assert area_pf == pytest.approx(100.303, abs=1e-3)
     wet_area = problem['geometry:wing:wetted_area']
     assert wet_area == pytest.approx(200.607, abs=1e-3)
+
 
 def test_geometry_wing_x(input_xml):
     """ Tests computation of the wing Xs """
@@ -907,6 +921,7 @@ def test_geometry_wing_x(input_xml):
     assert wing_x3 == pytest.approx(2.275, abs=1e-3)
     wing_x4 = problem['geometry:wing:tip:leading_edge:x']
     assert wing_x4 == pytest.approx(7.222, abs=1e-3)
+
 
 def test_geometry_wing_y(input_xml):
     """ Tests computation of the wing Ys """
@@ -1006,6 +1021,7 @@ def test_geometry_global_wing(input_xml):
     assert wing_y3 == pytest.approx(6.88, abs=1e-2)
     wing_y4 = problem['geometry:wing:tip:y']
     assert wing_y4 == pytest.approx(17.2, abs=1e-1)
+
 
 def test_geometry_nacelle_pylons(input_xml):
     """ Tests computation of the nacelle and pylons component """

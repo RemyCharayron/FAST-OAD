@@ -1,5 +1,5 @@
 """
-Test module for geometry general functions
+Estimation of centers of gravity
 """
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
 #  Copyright (C) 2020  ONERA/ISAE
@@ -13,25 +13,16 @@ Test module for geometry general functions
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-# pylint: disable=redefined-outer-name  # needed for pytest fixtures
-import filecmp
-import os
-
-from fastoad.modules._deprecated.geometry.functions import airfoil_reshape
-
-
-def test_reshape_airfoil():
-    """ Tests the reshape of the airfoil """
-
-    f_path_data = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
-    f_path_ori = os.path.join(f_path_data, 'BACJ.txt')
-    f_path_root_ref = os.path.join(f_path_data, 'root_ref.txt')
-    f_path_root = os.path.join(f_path_data, 'root.txt')
-    el_emp = 0.159
-
-    airfoil_reshape(el_emp, f_path_ori, f_path_root)
-
-    are_same = filecmp.cmp(f_path_root_ref, f_path_root)
-
-    assert are_same
+from .compute_aero_center import ComputeAeroCenter
+from .compute_cg_control_surfaces import ComputeControlSurfacesCG
+from .compute_cg_loadcase1 import ComputeCGLoadCase1
+from .compute_cg_loadcase2 import ComputeCGLoadCase2
+from .compute_cg_loadcase3 import ComputeCGLoadCase3
+from .compute_cg_loadcase4 import ComputeCGLoadCase4
+from .compute_cg_others import ComputeOthersCG
+from .compute_cg_ratio_aft import ComputeCGRatioAft
+from .compute_cg_tanks import ComputeTanksCG
+from .compute_cg_wing import ComputeWingCG
+from .compute_global_cg import ComputeGlobalCG
+from .compute_max_cg_ratio import ComputeMaxCGratio
+from .compute_static_margin import ComputeStaticMargin
