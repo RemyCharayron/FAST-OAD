@@ -2,7 +2,7 @@
 [run]
 branch = True
 source = fastoad
-# omit = bad_file.py
+omit = */tests/*
 
 [paths]
 source =
