@@ -66,7 +66,7 @@ class Profile:
         self.twist_angle: float = 0.
         """ In degrees. Defines how profile is rotated around the 25% chord """
 
-        self.planform_position: Coordinates2D = (x, y)
+        self.planform_position: Coordinates2D = Coordinates2D(x, y)
 
     def set_points(self, x: Sequence, z: Sequence,
                    keep_chord_length: bool = True,
