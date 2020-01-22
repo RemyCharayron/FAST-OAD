@@ -1,3 +1,4 @@
+""" Test module for profile.py """
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
 #  Copyright (C) 2020  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
@@ -18,8 +19,11 @@ from numpy.testing import assert_allclose
 from fastoad.modules.geometry.lifting_surfaces import Profile
 
 
+# pylint: disable=redefined-outer-name  # false positive on pytest fixtures
+
 @pytest.fixture()
 def point_set():
+    """ Defines a test profile """
     return np.array([[1, 0.00095],
                      [0.99, 0.00315],
                      [0.979999, 0.00534],
@@ -122,8 +126,10 @@ def point_set():
 
 
 def test_set_points(point_set):
-    x = point_set[:, 0]
-    z = point_set[:, 1]
+    """ test of Profile.set_points() """
+
+    x = point_set[:, 0]  # pylint:disable=invalid-name
+    z = point_set[:, 1]  # pylint:disable=invalid-name
 
     # Direct initialization from point set
     profile = Profile()
@@ -170,8 +176,9 @@ def test_set_points(point_set):
 
 
 def test_twist_angle(point_set):
-    x = point_set[:, 0]
-    z = point_set[:, 1]
+    """ test of Profile.twist_angle property """
+    x = point_set[:, 0]  # pylint:disable=invalid-name
+    z = point_set[:, 1]  # pylint:disable=invalid-name
 
     base_twist_angle = np.arctan2(z[0], x[0])  # because leading edge is at (0,0)
 

@@ -1,5 +1,6 @@
+""" Module for geometry of the fuselage """
 #  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2019  ONERA/ISAE
+#  Copyright (C) 2020  ONERA/ISAE
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -18,8 +19,9 @@ from fastoad.modules.geometry import ComponentGeometry
 class Fuselage(ComponentGeometry):
     """ Class for fuselage geometry of standard commercial transport aircraft """
 
-    def __init__(self):
-        super().__init__()
-
     def get_cabin_length(self):
+        """
+
+        :return: length of cabin, computed from fuselage length
+        """
         return 0.81 * self.length
