@@ -235,8 +235,6 @@ class FASTOADProblem(om.Problem):
         :param group:
         :param table:
         """
-        assert isinstance(table, dict), "table should be a dictionary"
-
         for key, value in table.items():
             if isinstance(value, dict):  # value defines a sub-component
                 if KEY_COMPONENT_ID in value:
