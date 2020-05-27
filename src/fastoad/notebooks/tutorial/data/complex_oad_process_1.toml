@@ -42,7 +42,7 @@ driver = "om.ScipyOptimizeDriver(tol=1e-6, optimizer='COBYLA', maxiter=2000)"
 [optimization]
     [[optimization.constraint]]
         name = "data:geometry:wing:span"
-        upper = 36.0
+        upper = 34.1
 
     [[optimization.constraint]]
         name = "data:handling_qualities:static_margin"
