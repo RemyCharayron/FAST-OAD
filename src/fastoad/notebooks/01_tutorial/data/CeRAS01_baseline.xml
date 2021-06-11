@@ -1608,6 +1608,11 @@
             <horizontal_tail>
                 <position_ratio_on_fuselage>0.91</position_ratio_on_fuselage>
             </horizontal_tail>
+            <wing>
+                <sweep_100_inner>
+                    <coefficient is_input="True">0.0</coefficient>
+                </sweep_100_inner>
+            </wing>
         </geometry>
         <mission>
             <sizing>

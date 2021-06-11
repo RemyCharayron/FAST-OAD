@@ -34,6 +34,7 @@ class ComputeL2AndL3Wing(ExplicitComponent):
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:taper_ratio", val=np.nan)
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
+        self.add_input("settings:geometry:wing:sweep_100_inner:coefficient", val=0.0)
 
         self.add_output("data:geometry:wing:root:chord", units="m")
         self.add_output("data:geometry:wing:kink:chord", units="m")
@@ -74,8 +75,9 @@ class ComputeL2AndL3Wing(ExplicitComponent):
         width_max = inputs["data:geometry:fuselage:maximum_width"]
         taper_ratio = inputs["data:geometry:wing:taper_ratio"]
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
+        coeff = inputs["settings:geometry:wing:sweep_100_inner:coefficient"]
 
-        l2_wing = l1_wing + (y3_wing - y2_wing) * (
+        l2_wing = l1_wing + (1 - coeff) * (y3_wing - y2_wing) * (
             math.tan(sweep_25 / 180.0 * math.pi)
             - 3.0 / 2.0 * (1.0 - taper_ratio) / (span - width_max) * l1_wing
         )
