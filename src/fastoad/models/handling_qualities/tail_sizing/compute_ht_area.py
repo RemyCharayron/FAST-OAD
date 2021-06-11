@@ -39,12 +39,7 @@ class ComputeHTArea(om.ExplicitComponent):
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
         self.add_input("settings:weight:aircraft:CG:range", val=0.3)
         self.add_input("settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08)
-        self.add_input(
-            "settings:geometry:horizontal_tail:position_ratio_on_fuselage",
-            val=0.91,
-            desc="(does not apply for T-tails) distance to aircraft nose of 25% MAC of "
-            "horizontal tail divided by fuselage length",
-        )
+        self.add_input("settings:geometry:horizontal_tail:position_ratio_on_fuselage", val=0.91)
 
         self.add_output(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", units="m", ref=30.0

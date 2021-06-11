@@ -352,6 +352,8 @@ data:weight:systems:power:hydraulic_systems:CG:x || power (C1): X-position of ce
 data:weight:systems:power:hydraulic_systems:mass || power (C1): mass
 data:weight:systems:transmission:CG:x || transmission (C4): X-position of center of gravity
 data:weight:systems:transmission:mass || transmission (C4): mass
+settings:geometry:horizontal_tail:position_ratio_on_fuselage || (does not apply for T-tails) distance to aircraft nose of 25% MAC of horizontal tail divided by fuselage length
+settings:geometry:wing:sweep_100_inner:coefficient || controls the sweep angle of inner trailing edge, i.e. between fuselage and engine location (a.k.a. "kink"). 0.0 produces 0°. 1.0 produces the same sweep angle as outer wing.
 settings:mission:sizing:breguet:climb:mass_ratio || For Breguet performance computation: assumption of (mass at end of climb) / (mass at start of climb)
 settings:mission:sizing:breguet:climb_descent_distance || For Breguet performance computation: assumption of ground distance covered during climb + descent
 settings:mission:sizing:breguet:descent:mass_ratio || For Breguet performance computation: assumption of (mass at end of descent) / (mass at start of descent)
