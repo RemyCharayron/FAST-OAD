@@ -695,7 +695,7 @@ class VariableList(list):
         processed_prom_names = []
 
         io_metadata = model.get_io_metadata(
-            metadata_keys=["value", "units"], return_rel_names=False
+            metadata_keys=["value", "units", "desc"], return_rel_names=False
         )
 
         def _add_outputs(unconnected_names):
