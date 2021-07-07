@@ -364,6 +364,11 @@ class VariableList(list):
 
         for var in other_var_list:
             if add_variables or var.name in self.names():
+                # To avoid to loose variables description when the variable list is updated with a
+                # list without descriptions (issue # 319)
+                if var.name in self.names():
+                    if self[var.name].description and not var.description:
+                        var.description = self[var.name].description
                 self.append(deepcopy(var))
 
     def to_ivc(self) -> om.IndepVarComp:

@@ -97,6 +97,21 @@ def test_variables():
     assert list(variables.names()) == ["a", "b", "n"]
     assert variables["a"].value == -10.0
 
+    # We test if descriptions are kept if they exist in the original list but not the new one
+    variables.update([Variable("n", desc="description")], add_variables=False)
+    assert len(variables) == 3
+    assert list(variables.names()) == ["a", "b", "n"]
+    assert variables["n"].description == "description"
+    variables.update([Variable("n", desc="")], add_variables=False)
+    assert len(variables) == 3
+    assert list(variables.names()) == ["a", "b", "n"]
+    assert variables["n"].description == "description"
+    # We test if descriptions are updated if they exist in both lists
+    variables.update([Variable("n", desc="new description")], add_variables=False)
+    assert len(variables) == 3
+    assert list(variables.names()) == ["a", "b", "n"]
+    assert variables["n"].description == "new description"
+
 
 def test_ivc_from_to_variables():
     """
