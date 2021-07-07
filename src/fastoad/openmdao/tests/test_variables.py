@@ -157,6 +157,10 @@ def _compare_variable_lists(vars: List[Variable], expected_vars: List[Variable])
     expected_vars_dict = {var.name: var.is_input for var in expected_vars}
     assert vars_dict == expected_vars_dict
 
+    vars_dict = {var.name: var.description for var in vars}
+    expected_vars_dict = {var.name: var.description for var in expected_vars}
+    assert vars_dict == expected_vars_dict
+
 
 def test_get_variables_from_problem_with_an_explicit_component():
     problem = om.Problem()
@@ -164,10 +168,10 @@ def test_get_variables_from_problem_with_an_explicit_component():
     problem.setup()
 
     expected_vars = [
-        Variable(name="x", value=np.array([np.nan]), units=None, is_input=True),
-        Variable(name="y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(name="x", value=np.array([np.nan]), units=None, desc="input x", is_input=True),
+        Variable(name="y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"),
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False),
+        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"),
     ]
 
     vars = VariableList.from_problem(problem, use_initial_values=False, get_promoted_names=True)
@@ -182,9 +186,9 @@ def test_get_variables_from_problem_with_a_group():
     problem.setup()
 
     expected_vars = [
-        Variable(name="x", value=np.array([np.nan]), units=None, is_input=True),
-        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="y2", value=np.array([1.0]), units=None, is_input=False),
+        Variable(name="x", value=np.array([np.nan]), units=None, is_input=True, desc="input x"),
+        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"),
+        Variable(name="y2", value=np.array([1.0]), units=None, is_input=False, desc="variable y2"),
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
     ]
 
@@ -205,10 +209,10 @@ def test_get_variables_from_problem_sellar_with_promotion_without_computation():
     problem.setup()
 
     expected_vars_promoted = [
-        Variable(name="x", value=np.array([1.0]), units="Pa", is_input=True),
+        Variable(name="x", value=np.array([1.0]), units="Pa", is_input=True, desc="input x"),
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="y2", value=np.array([1.0]), units=None, is_input=False),
+        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"),
+        Variable(name="y2", value=np.array([1.0]), units=None, is_input=False, desc="variable y2"),
         Variable(name="g1", value=np.array([1.0]), units=None, is_input=False),
         Variable(name="g2", value=np.array([1.0]), units=None, is_input=False),
         Variable(name="f", value=np.array([1.0]), units=None, is_input=False),
@@ -216,10 +220,16 @@ def test_get_variables_from_problem_sellar_with_promotion_without_computation():
     expected_vars_non_promoted = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([np.nan]), units=None, is_input=True),
+        Variable(
+            name="disc1.x", value=np.array([np.nan]), units=None, is_input=True, desc="input x"
+        ),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="disc1.y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([1.0]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([1.0]), units=None, is_input=False),
@@ -235,10 +245,14 @@ def test_get_variables_from_problem_sellar_with_promotion_without_computation():
     expected_vars_non_promoted_computed = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True),
+        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True, desc="input x"),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="disc1.y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([1.0]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([1.0]), units=None, is_input=False),
@@ -277,19 +291,23 @@ def test_get_variables_from_problem_sellar_with_promotion_with_computation():
     problem.setup()
 
     expected_vars_promoted_initial = [
-        Variable(name="x", value=np.array([1.0]), units="Pa", is_input=True),
+        Variable(name="x", value=np.array([1.0]), units="Pa", is_input=True, desc="input x"),
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="y2", value=np.array([1.0]), units=None, is_input=False),
+        Variable(name="y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"),
+        Variable(name="y2", value=np.array([1.0]), units=None, is_input=False, desc="variable y2"),
         Variable(name="g1", value=np.array([1.0]), units=None, is_input=False),
         Variable(name="g2", value=np.array([1.0]), units=None, is_input=False),
         Variable(name="f", value=np.array([1.0]), units=None, is_input=False),
     ]
     expected_vars_promoted_computed = [
-        Variable(name="x", value=np.array([1.0]), units="Pa", is_input=True),
+        Variable(name="x", value=np.array([1.0]), units="Pa", is_input=True, desc="input x"),
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="y1", value=np.array([25.58830237]), units=None, is_input=False),
-        Variable(name="y2", value=np.array([12.05848815]), units=None, is_input=False),
+        Variable(
+            name="y1", value=np.array([25.58830237]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="y2", value=np.array([12.05848815]), units=None, is_input=False, desc="variable y2"
+        ),
         Variable(name="f", value=np.array([28.58830817]), units=None, is_input=False),
         Variable(name="g1", value=np.array([-22.42830237]), units=None, is_input=False),
         Variable(name="g2", value=np.array([-11.94151185]), units=None, is_input=False),
@@ -297,10 +315,16 @@ def test_get_variables_from_problem_sellar_with_promotion_with_computation():
     expected_vars_non_promoted_initial = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([np.nan]), units=None, is_input=True),
+        Variable(
+            name="disc1.x", value=np.array([np.nan]), units=None, is_input=True, desc="input x"
+        ),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="disc1.y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([1.0]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([1.0]), units=None, is_input=False),
@@ -315,10 +339,22 @@ def test_get_variables_from_problem_sellar_with_promotion_with_computation():
     expected_vars_non_promoted_computed = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True),
+        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True, desc="input x"),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([25.58830237]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([12.05848815]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1",
+            value=np.array([25.58830237]),
+            units=None,
+            is_input=False,
+            desc="variable y1",
+        ),
+        Variable(
+            name="disc1.y2",
+            value=np.array([12.05848815]),
+            units=None,
+            is_input=True,
+            desc="variable y2",
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([25.58830237]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([12.05848815]), units=None, is_input=False),
@@ -371,10 +407,16 @@ def test_get_variables_from_problem_sellar_without_promotion_without_computation
     expected_vars_initial = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([np.nan]), units=None, is_input=True),
+        Variable(
+            name="disc1.x", value=np.array([np.nan]), units=None, is_input=True, desc="input x"
+        ),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="disc1.y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([1.0]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([1.0]), units=None, is_input=False),
@@ -391,10 +433,14 @@ def test_get_variables_from_problem_sellar_without_promotion_without_computation
     expected_vars_computed = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True),
+        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True, desc="input x"),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="disc1.y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([1.0]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([1.0]), units=None, is_input=False),
@@ -458,10 +504,16 @@ def test_get_variables_from_problem_sellar_without_promotion_with_computation():
     expected_vars_initial = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([np.nan]), units=None, is_input=True),
+        Variable(
+            name="disc1.x", value=np.array([np.nan]), units=None, is_input=True, desc="input x"
+        ),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([1.0]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([1.0]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1", value=np.array([1.0]), units=None, is_input=False, desc="variable y1"
+        ),
+        Variable(
+            name="disc1.y2", value=np.array([1.0]), units=None, is_input=True, desc="variable y2"
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([1.0]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([1.0]), units=None, is_input=False),
@@ -476,10 +528,22 @@ def test_get_variables_from_problem_sellar_without_promotion_with_computation():
     expected_vars_computed = [
         Variable(name="indeps.x", value=np.array([1.0]), units="Pa", is_input=True),
         Variable(name="indeps.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True),
+        Variable(name="disc1.x", value=np.array([1.0]), units=None, is_input=True, desc="input x"),
         Variable(name="disc1.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
-        Variable(name="disc1.y1", value=np.array([25.58830237]), units=None, is_input=False),
-        Variable(name="disc1.y2", value=np.array([12.05848815]), units=None, is_input=True),
+        Variable(
+            name="disc1.y1",
+            value=np.array([25.58830237]),
+            units=None,
+            is_input=False,
+            desc="variable y1",
+        ),
+        Variable(
+            name="disc1.y2",
+            value=np.array([12.05848815]),
+            units=None,
+            is_input=True,
+            desc="variable y2",
+        ),
         Variable(name="disc2.z", value=np.array([5.0, 2.0]), units="m**2", is_input=True),
         Variable(name="disc2.y1", value=np.array([25.58830237]), units=None, is_input=True),
         Variable(name="disc2.y2", value=np.array([12.05848815]), units=None, is_input=False),
@@ -528,8 +592,18 @@ def _test_and_check_from_unconnected_inputs(
     vars = VariableList.from_unconnected_inputs(problem, with_optional_inputs=False)
     assert set(vars) == set(expected_mandatory_vars)
 
+    vars_dict = {var.name: var.description for var in vars}
+    expected_vars_dict = {var.name: var.description for var in expected_mandatory_vars}
+    assert vars_dict == expected_vars_dict
+
     vars = VariableList.from_unconnected_inputs(problem, with_optional_inputs=True)
     assert set(vars) == set(expected_mandatory_vars + expected_optional_vars)
+
+    vars_dict = {var.name: var.description for var in vars}
+    expected_vars_dict = {
+        var.name: var.description for var in (expected_mandatory_vars + expected_optional_vars)
+    }
+    assert vars_dict == expected_vars_dict
 
 
 def test_variables_from_unconnected_inputs_with_an_explicit_component():
@@ -538,11 +612,25 @@ def test_variables_from_unconnected_inputs_with_an_explicit_component():
     problem = om.Problem(group)
 
     expected_mandatory_vars = [
-        Variable(name="x", value=np.array([np.nan]), units=None, is_input=True, prom_name="x")
+        Variable(
+            name="x",
+            value=np.array([np.nan]),
+            units=None,
+            is_input=True,
+            prom_name="x",
+            desc="input x",
+        )
     ]
     expected_optional_vars = [
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True, prom_name="z"),
-        Variable(name="y2", value=np.array([1.0]), units=None, is_input=True, prom_name="y2"),
+        Variable(
+            name="y2",
+            value=np.array([1.0]),
+            units=None,
+            is_input=True,
+            prom_name="y2",
+            desc="variable y2",
+        ),
     ]
     _test_and_check_from_unconnected_inputs(
         problem, expected_mandatory_vars, expected_optional_vars
@@ -556,7 +644,14 @@ def test_variables_from_unconnected_inputs_with_a_group():
     problem = om.Problem(group)
 
     expected_mandatory_vars = [
-        Variable(name="x", value=np.array([np.nan]), units=None, is_input=True, prom_name="x")
+        Variable(
+            name="x",
+            value=np.array([np.nan]),
+            units=None,
+            is_input=True,
+            prom_name="x",
+            desc="input x",
+        )
     ]
     expected_optional_vars = [
         Variable(name="z", value=np.array([5.0, 2.0]), units="m**2", is_input=True, prom_name="z")
@@ -575,7 +670,14 @@ def test_variables_from_unconnected_inputs_with_sellar_problem():
     problem = om.Problem(group)
 
     expected_mandatory_vars = [
-        Variable(name="x", value=np.array([np.nan]), units=None, is_input=True, prom_name="x"),
+        Variable(
+            name="x",
+            value=np.array([np.nan]),
+            units=None,
+            is_input=True,
+            prom_name="x",
+            desc="input x",
+        ),
         Variable(
             name="z", value=np.array([np.nan, np.nan]), units="m**2", is_input=True, prom_name="z"
         ),
