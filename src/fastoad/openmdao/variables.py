@@ -738,6 +738,8 @@ class VariableList(list):
                     metadata = deepcopy(io_metadata[abs_name])
                     metadata.update({"is_input": True})
                     variables[prom_name] = metadata
+                elif not variables[prom_name].description and io_metadata[abs_name]["desc"]:
+                    variables[prom_name].description = io_metadata[abs_name]["desc"]
 
         _add_outputs(mandatory_unconnected)
         if with_optional_inputs:
